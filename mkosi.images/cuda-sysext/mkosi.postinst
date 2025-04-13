@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eux
+
+mv $BUILDROOT/etc/ld.so.conf.d/cuda.conf $BUILDROOT/usr/lib/ld.so.conf.d/
+mv $BUILDROOT/etc/profile.d/cuda.sh $BUILDROOT/usr/share/factory/etc/profile.d/

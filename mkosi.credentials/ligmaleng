@@ -1,0 +1,17 @@
+{
+        "username": "ligmaleng",
+        "uid": 1000,
+        "gid": 1000,
+        "disposition": "regular",
+        "enforcePasswordPolicy": false,
+        "memberOf": [
+                "wheel",
+                "systemd-journal"
+        ],
+        "secret": {
+                "password": ["ligma"]
+        },
+        "privileged": {
+                "hashedPassword": ["$1$0CRiURAo$jonWmKbEsA1K5RHKw7.u01"]
+        }
+}

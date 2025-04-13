@@ -1,0 +1,28 @@
+[Unit]
+Description=Repartition Root Disk
+Documentation=man:systemd-repart.service(8)
+
+ConditionVirtualization=!container
+ConditionDirectoryNotEmpty=|/usr/lib/repart.d
+ConditionDirectoryNotEmpty=|/usr/local/lib/repart.d
+ConditionDirectoryNotEmpty=|/etc/repart.d
+ConditionDirectoryNotEmpty=|/run/repart.d
+ConditionDirectoryNotEmpty=|/sysusr/usr/lib/repart.d
+ConditionDirectoryNotEmpty=|/sysusr/usr/local/lib/repart.d
+
+DefaultDependencies=no
+Wants=modprobe@loop.service modprobe@dm_mod.service
+After=initrd-usr-fs.target modprobe@loop.service modprobe@dm_mod.service systemd-tpm2-setup-early.service
+Before=initrd-root-fs.target
+Conflicts=shutdown.target initrd-switch-root.target
+Before=shutdown.target initrd-switch-root.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=systemd-repart --dry-run=no --tpm2-device=auto --tpm2-pcrs=15:sha256=0000000000000000000000000000000000000000000000000000000000000000
+
+# The tool returns 76 if it can't find the root block device
+SuccessExitStatus=76
+# The tool returns 77 if there's no existing GPT partition table
+SuccessExitStatus=77

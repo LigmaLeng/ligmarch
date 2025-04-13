@@ -1,0 +1,31 @@
+#!/bin/bash
+set -eu
+
+# Make sure pam.d is included in usr partition
+[[ -d /etc/pam.d ]] && {
+	find /etc/pam.d -mindepth 1 -exec mv {} /usr/lib/pam.d \;
+	rmdir /etc/pam.d
+}
+
+# Get rid of obsolete stuff in the pam stack
+find /usr/lib/pam.d -mindepth 1 -exec sed --in-place '/pam_shells.so/d' {} \;
+find /usr/lib/pam.d -mindepth 1 -exec sed --in-place '/pam_securetty.so/d' {} \;
+
+rm /usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist
+mv /etc/libccid_Info.plist /usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist
+
+mkdir -p /usr/lib/pacman
+mv /var/lib/pacman/local /usr/lib/pacman
+
+mkdir -p /usr/share/factory
+# Point systemd-shell-extra.sh symlink to the right place
+rm /etc/profile.d/70-systemd-shell-extra.sh
+ln -s /usr/lib/systemd/profile.d/70-systemd-shell-extra.sh /etc/profile.d/70-systemd-shell-extra.sh
+cp --archive --no-target-directory --update=none /etc /usr/share/factory/etc
+
+# Remove tmpfiles config for arch defaults, auditd, and
+# chmod for /usr/lib/utempter/utempter and /usr/bin/groupmems (which is done when
+# building the image but throws an error on boot due to read-only filesystem)
+#rm /usr/lib/tmpfiles.d/{arch,audit,libutempter,shadow}.conf
+rm /usr/lib/tmpfiles.d/{arch,audit}.conf
+locale-gen

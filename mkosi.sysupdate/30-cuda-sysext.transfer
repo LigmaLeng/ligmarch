@@ -1,0 +1,14 @@
+[Transfer]
+ProtectVersion=%A
+
+[Source]
+Type=regular-file
+Path=/
+PathRelativeTo=explicit
+MatchPattern=cuda_@v.raw
+
+[Target]
+InstancesMax=2
+Type=regular-file
+Path=/var/lib/extensions
+MatchPattern=cuda_@v.raw

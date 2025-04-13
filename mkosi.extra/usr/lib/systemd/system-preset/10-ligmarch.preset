@@ -1,0 +1,13 @@
+enable systemd-homed-firstboot.service
+
+disable avahi.*
+
+enable pcscd.service
+
+enable preset-global.service
+
+disable sshd.service
+disable ssh.service
+enable sshd.socket
+enable ssh.socket
+enable sshdgenkeys.service

@@ -1,0 +1,8 @@
+build/
+.mkosi-private
+mkosi.extra/efi/loader/keys/sbkeys/
+mkosi.pkgcache/
+mkosi.sandbox/etc/pacman.d/
+swtpm/
+cpeekio.sh
+mkosi.local.conf

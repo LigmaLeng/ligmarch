@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+
+date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y%m%d%H%M%S

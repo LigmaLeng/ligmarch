@@ -1,0 +1,8 @@
+todo:
+-fix systemd.image policy support
+-boot counting
+-manual aur builds
+-separate sysext into profiles
+
+future:
+-iscsi support
