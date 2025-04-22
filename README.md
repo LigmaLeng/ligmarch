@@ -41,7 +41,8 @@ If you wish to change the configured slots, `mkosi.conf` would need to be modifi
 as well as the associative array declaration in bash script. It is highly recommended
 to read the appropriate documentation if modifications are desired.
 
-```declare -A yubikey_piv_slots=(
+```
+declare -A yubikey_piv_slots=(
         ["PK"]=95
         ["KEK"]=94
         ["db"]=93
