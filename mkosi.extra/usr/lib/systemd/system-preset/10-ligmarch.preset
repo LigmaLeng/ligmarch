@@ -1,4 +1,10 @@
+enable systemd-timesyncd.service
 enable systemd-homed-firstboot.service
+
+enable systemd-networkd.service
+enable systemd-networkd.socket
+enable systemd-networkd-wait-online.service
+enable systemd-resolved.service
 
 disable avahi.*
 

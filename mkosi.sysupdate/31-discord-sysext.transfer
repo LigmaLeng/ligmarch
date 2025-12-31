@@ -1,0 +1,14 @@
+[Transfer]
+ProtectVersion=%A
+
+[Source]
+Type=regular-file
+Path=/
+PathRelativeTo=explicit
+MatchPattern=discord_@v.raw
+
+[Target]
+InstancesMax=2
+Type=regular-file
+Path=/var/lib/extensions
+MatchPattern=discord_@v.raw

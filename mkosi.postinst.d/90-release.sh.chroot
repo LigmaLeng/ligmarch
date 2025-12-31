@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+if [[ ${IMAGE_ID} != 'Ligmarch' ]]; then
+    for s in {SYS,CONF}EXT_{SCOPE,LEVEL}; do
+        [[ -v "${s}" && -n "${s}" ]] || continue
+        [[ ${s} == SYS* ]] &&
+            : "/usr/lib/extension-release.d" ||
+            : "/etc/extension-release.d"
+        mkdir -p "$_"
+        echo "${s}=${!s}" >>"$_/extension-release.${IMAGE_ID}_${IMAGE_VERSION}"
+    done
+else
+    for s in {SYS,CONF}EXT_LEVEL; do
+        [[ -v "${s}" && -n "${s}" ]] || continue
+        echo "${s}=${!s}" >>"/usr/lib/os-release"
+    done
+fi

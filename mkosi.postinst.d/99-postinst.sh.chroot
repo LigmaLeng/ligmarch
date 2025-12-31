@@ -1,0 +1,20 @@
+#!/bin/bash
+set -eu
+
+# Make sure pam.d is included in usr partition
+[[ -d /etc/pam.d ]] && {
+    find /etc/pam.d -mindepth 1 -exec mv {} /usr/lib/pam.d \;
+    rmdir /etc/pam.d
+}
+
+# Get rid of obsolete stuff in the pam stack
+find /usr/lib/pam.d -mindepth 1 -exec sed --in-place '/pam_shells.so/d' {} \;
+find /usr/lib/pam.d -mindepth 1 -exec sed --in-place '/pam_securetty.so/d' {} \;
+
+# Point systemd profile symlinks to the right place
+ln -s -f /usr/lib/systemd/profile.d/* /etc/profile.d/
+
+# Remove unnecessary tmpfiles configs
+rm /usr/lib/tmpfiles.d/{arch,audit,openssh,mkosi}.conf
+
+locale-gen

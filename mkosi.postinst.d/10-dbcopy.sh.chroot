@@ -1,0 +1,5 @@
+#!/bin/bash
+set -eu
+
+mkdir -p /usr/lib/pacman/local
+cp --archive --no-target-directory --update=none /var/lib/pacman/local /usr/lib/pacman/local

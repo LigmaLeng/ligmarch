@@ -1,0 +1,6 @@
+#!/bin/bash
+set -eu
+fontfile="/usr/share/kbd/keymaps/i386/dvorak/dvorak-programmer.map.gz"
+
+install -m 644 <(zcat $fontfile | sed --expression='/^keycode   3 = bracketleft/a\control keycode   3 = Escape') ${fontfile%.gz}
+rm $fontfile
