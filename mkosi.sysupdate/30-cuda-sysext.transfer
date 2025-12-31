@@ -10,5 +10,5 @@ MatchPattern=cuda_@v.raw
 [Target]
 InstancesMax=2
 Type=regular-file
-Path=/var/lib/extensions
+Path=/var/lib/extensions/cuda.raw.v
 MatchPattern=cuda_@v.raw

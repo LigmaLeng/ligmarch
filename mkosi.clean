@@ -1,4 +1,4 @@
 #!/bin/bash
 set -eu
 
-rm -rf ${OUTPUTDIR}/*
+rm -rf "${OUTPUTDIR:?}/${IMAGE_ID}"*

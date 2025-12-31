@@ -10,5 +10,5 @@ MatchPattern=discord_@v.raw
 [Target]
 InstancesMax=2
 Type=regular-file
-Path=/var/lib/extensions
+Path=/var/lib/extensions/discord.raw.v
 MatchPattern=discord_@v.raw
