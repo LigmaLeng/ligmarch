@@ -1,0 +1,6 @@
+#!/bin/bash
+# SPDX-License-Identifier: LGPL-2.1-or-later
+set -eu
+
+mkdir -p "$BUILDROOT/usr/share/factory/"
+mv "$BUILDROOT/etc/"{pacman,nftables}.conf "$BUILDROOT/usr/share/factory/etc"

@@ -1,13 +1,11 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 todo:
 -add confext for etc/opencl (opencl-nvidia)
 -libahci.ignore_sss=1
 -ID mapped mounts for per-service directories
 -IPE lsm
--fix systemd.image policy support
--boot counting
 -manual aur builds
--separate sysext into profiles
-nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits
 
 future:
 -iscsi support

@@ -1,33 +1,36 @@
 # LigmarchOS
 
 A personal and opinionated reference implementation of an immutable, image-based
-operating system as described in [Fitting Everything Together](https://0pointer.net/blog/fitting-everything-together.html).
-Based on Arch Linux and built using [mkosi](https://github.com/systemd/mkosi).
+operating system as described in [Fitting Everything Together]. Based on Arch
+Linux and built using [mkosi].
 
 ## Features
 
 - Immutable, verity-protected, signed OS images with hermetic /usr/
-- Immutable, verity-protected, signed system extension images for use with systemd-sysext
+- Immutable, verity-protected, signed system extension images for use with
+  systemd-sysext
 - A/B styled system updates
 - Encrypted root partition bound to a Trusted Platform Module (TPM2) chip
 - Systemd-homed managed users with migratable encrypted home directories
-- GPT automounting with systemd-boot (minimal to no configuration for fstab/crypttab)
+- GPT automounting with systemd-boot (minimal to no configuration for
+  fstab/crypttab)
 - Unified Kernel Images (UKIs) signed for UEFI Secure Boot
 - Secure Boot variable generation and auto enrollment
-- Yubikey integration for signing secure boot variables, PCR signatures,
-  and verity hash data with PKCS#11 tokens generated on hardware security device
+- Yubikey integration for signing secure boot variables, PCR signatures, and
+  verity hash data with PKCS#11 tokens generated on hardware security device
 - Password-less/2FA user authentication using FIDO2 tokens
-- Heavily focussed toward the [Wayland](https://wayland.freedesktop.org/) display server protocol
+- Heavily focussed toward the [Wayland] display server protocol
 
 ## Signing keys
 
-Images are configured to be signed using a Yubikey with PIV (Smart card) support.
-Assuming you have one setup for the PIV application, the script `securebikey` will
-generate key pairs on the last five slots meant for retired key management so that
-the primary certificate slots may be reserved for personal use. The mkosi configuration
-is set to use these keys for signing via its PKCS#11 URI in the validation section.
+Images are configured to be signed using a Yubikey with PIV (Smart card)
+support. Assuming you have one setup for the PIV application, the script
+`securebikey` will generate key pairs on the last five slots meant for retired
+key management so that the primary certificate slots may be reserved for
+personal use. The mkosi configuration is set to use these keys for signing via
+its PKCS#11 URI in the validation section.
 
-```
+```sh
 [Validation]
 SecureBootKeySource=engine:pkcs11
 SignExpectedPcrKeySource=engine:pkcs11
@@ -37,11 +40,12 @@ VerityKey=pkcs11:object=Private key for Retired Key 17;type=private
 SignExpectedPcrKey=pkcs11:object=Private key for Retired Key 16;type=private
 ```
 
-If you wish to change the configured slots, `mkosi.conf` would need to be modified
-as well as the associative array declaration in bash script. It is highly recommended
-to read the appropriate documentation if modifications are desired.
+If you wish to change the configured slots, `mkosi.conf` would need to be
+modified as well as the associative array declaration in bash script. It is
+highly recommended to read the appropriate documentation if modifications are
+desired.
 
-```
+```sh
 declare -A yubikey_piv_slots=(
         ["PK"]=95
         ["KEK"]=94
@@ -51,34 +55,50 @@ declare -A yubikey_piv_slots=(
 )
 ```
 
-Note the script requires packages: yubikey-manager yubico-piv-tool efitools openssl
+Note the script requires packages: yubikey-manager yubico-piv-tool efitools
+openssl
 
 ## Building and updating
 
-run `mkosi -f` from the repository to remove previous build artifacts when building
-the image, specifying -f twice removes previously cached images if incremental builds
-are enabled running `mkosi sysupdate update` will call `systemd-sysupdate` with the
-transfer source pointing to the outputs of the previous build.
+Running `mkosi -f` from the repository to remove previous build artifacts when
+building the image, specifying -f twice removes previously cached images if
+incremental builds are enabled running `mkosi sysupdate update` will call
+`systemd-sysupdate` with the transfer source pointing to the outputs of the
+previous build.
 
-For the time being, the update command might will fail while systemd system extensions
-are currently mounted. The workaround is to unmount the system extensions using
-`systemd-sysext unmerge` before running the update command. This is a known issue
+If there is an error with detecting the main image, you can manually call
+
+```sh
+/usr/lib/systemd/systemd-sysupdate \
+    --transfer-source=build/mkosi.output \
+    --definitions=mkosi.sysupdate update
+```
 
 ## Installation
 
-Ensure Secure Boot is in setup mode (disabled) in the firmware settings and clear
-your Secure Boot keys. It's probably a good idea to back them up beforehand just
-in case, as the keys generated by the `securebikey` script are meant to prevent any
-EFI Binaries (including operating systems) from being executed without your explicit
-signing.
+Ensure Secure Boot is in setup mode (disabled) in the firmware settings and
+clear your Secure Boot keys. It's probably a good idea to back them up
+beforehand just in case, as the keys generated by the `securebikey` script are
+meant to prevent any EFI Binaries (including operating systems) from being
+executed without your explicit signing.
 
-The image can be installed onto portable devices by running `mkosi burn /dev/<usb>`
-after building the image. This will create a bootable USB drive with which you can
-use as a live image to populate other machines in a self replicating manner. This
-is done by booting into the USB drive via the firmware and selecting the "Installer"
-UKI profile. Upon entering the root shell, run
-`systemd-repart --dry-run=no --empty=force --defer-partitions=swap,root,home /dev/<drive>`
-before rebooting into the newly populated drive and selecting the regular profile.
+The image can be installed onto portable devices by running
+`mkosi burn /dev/<usb>` after building the image. This will create a bootable
+USB drive with which you can use as a live image to populate other machines in a
+self replicating manner. This is done by booting into the USB drive via the
+firmware and selecting the "Installer" UKI profile. Upon entering the root
+shell, run
+
+```sh
+systemd-repart --dry-run=no \
+               --empty=force \
+               --defer-partitions-empty=yes \
+               --defer-partitions-factory-reset=yes \
+               /dev/<drive>
+```
+
+before rebooting into the newly populated drive and selecting the regular
+profile.
 
 ## User setup
 
@@ -91,9 +111,7 @@ homectl update \
     --fido2-with-client-pin=yes \
     --fido2-with-user-presence=yes \
     --auto-resize-mode=off \
-    --disk-size=max \
     --luks-discard=on \
-    --luks-extra-mount-options "user_subvol_rm_allowed,compress=zstd:1"
 ```
 
 This will set up the user to use a FIDO2 device for authentication, you may
@@ -102,6 +120,11 @@ to your threat model. Disabling auto resize mode avoids unnecessary wait times
 during boot and shutdown especially if you aren't on a multi-user system. The
 same idea applies when configuring allocated disk size for your user. Enabling
 luks-discard ensures that empty space in the home directory is returned to the
-backing file system below the LUKS2 volume, resulting in a "sparse" loopback file.
-The extra LUKS mount options are BTRFS mount options to optimize image builds by
-compressing data on disk and allowing users to delete subvolumes.
+backing file system below the LUKS2 volume, resulting in a "sparse" loopback
+file. The extra LUKS mount options are BTRFS mount options to optimize image
+builds by compressing data on disk and allowing users to delete subvolumes.
+
+[Wayland]: https://wayland.freedesktop.org/
+[mkosi]: https://github.com/systemd/mkosi
+[Fitting Everything Together]:
+  https://0pointer.net/blog/fitting-everything-together.html

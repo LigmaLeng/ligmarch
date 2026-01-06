@@ -1,3 +1,9 @@
+"# SPDX-License-Identifier: LGPL-2.1-or-later
+
+if &compatible
+    set nocompatible
+endif
+
 set suffixes+=.aux,.bbl,.blg,.brf,.cb,.dvi,.idx,.ilg,.ind,.inx,.jpg,.log,.out,.png,.toc
 set suffixes-=.h
 set suffixes-=.obj
@@ -35,7 +41,6 @@ endif
 let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
 
 " FORMATTING
-set nocompatible
 set fileformat=unix
 filetype plugin on
 syntax on
