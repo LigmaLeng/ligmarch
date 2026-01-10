@@ -3,6 +3,6 @@
 set -eu
 
 find "$BUILDROOT/usr/lib/repart.d" \
-    -maxdepth 1 -type f \
-    -regex '.*\(swap\|tmp\|root\).conf' \
-    -exec sed --in-place '/Encrypt=tpm2/d' {} \;
+	-maxdepth 1 -type f \
+	-regex '.*\(swap\|tmp\|root\).conf' \
+	-exec sed --in-place '/Encrypt=tpm2/d' {} \;

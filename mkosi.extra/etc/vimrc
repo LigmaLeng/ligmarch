@@ -1,7 +1,7 @@
 "# SPDX-License-Identifier: LGPL-2.1-or-later
 
 if &compatible
-    set nocompatible
+	set nocompatible
 endif
 
 set suffixes+=.aux,.bbl,.blg,.brf,.cb,.dvi,.idx,.ilg,.ind,.inx,.jpg,.log,.out,.png,.toc
@@ -10,14 +10,14 @@ set suffixes-=.obj
 
 " Move temporary files to a secure location to protect against CVE-2017-1000382
 if exists('$XDG_STATE_HOME')
-  let &g:directory=$XDG_STATE_HOME
+	let &g:directory=$XDG_STATE_HOME
 else
-  let &g:directory=$HOME . '/.local/state'
+	let &g:directory=$HOME . '/.local/state'
 endif
 if exists('$XDG_DATA_HOME')
-  let g:netrw_home=$XDG_DATA_HOME . '/vim'
+	let g:netrw_home=$XDG_DATA_HOME . '/vim'
 else
-  let g:netrw_home=$HOME . '/.local/share'
+	let g:netrw_home=$HOME . '/.local/share'
 endif
 
 let &g:undodir=&g:directory . '/vim/undo//'
@@ -27,16 +27,16 @@ let &g:viminfofile=&g:directory . '/vim/viminfo'
 let &g:directory.='/vim/swap//'
 " Create directories if they doesn't exist
 if ! isdirectory(expand(&g:directory))
-  silent! call mkdir(expand(&g:directory), 'p', 0700)
+	silent! call mkdir(expand(&g:directory), 'p', 0700)
 endif
 if ! isdirectory(expand(&g:backupdir))
-  silent! call mkdir(expand(&g:backupdir), 'p', 0700)
+	silent! call mkdir(expand(&g:backupdir), 'p', 0700)
 endif
 if ! isdirectory(expand(&g:undodir))
-  silent! call mkdir(expand(&g:undodir), 'p', 0700)
+	silent! call mkdir(expand(&g:undodir), 'p', 0700)
 endif
 if ! isdirectory(expand(g:netrw_home))
-  silent! call mkdir(expand(g:netrw_home), 'p', 0700)
+	silent! call mkdir(expand(g:netrw_home), 'p', 0700)
 endif
 let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
 
@@ -95,33 +95,33 @@ set timeoutlen=200
 " PERSISTENCE
 set autowrite
 if has("persistent_undo")
-  set undofile
+	set undofile
 endif
 
 " AUTOCOMMANDS
 augroup ligrc_winch
-  au!
-  au WinLeave * setlocal nocursorline
-  au BufWinLeave * {
-    if !(&l:buftype =~# 'help\|nowrite\|nofile\|terminal' || &ft ==# 'netrw')
-      mkview
-    endif
-  }
-  au VimEnter,WinEnter * setlocal cursorline
-  au BufWinEnter * {
-    if &l:buftype ==# 'help'
-      wincmd L
-    else
-      silent! loadview
-    endif
-  }
+	au!
+	au WinLeave * setlocal nocursorline
+	au BufWinLeave * {
+	if !(&l:buftype =~# 'help\|nowrite\|nofile\|terminal' || &ft ==# 'netrw')
+	mkview
+	endif
+	}
+	au VimEnter,WinEnter * setlocal cursorline
+	au BufWinEnter * {
+	if &l:buftype ==# 'help'
+	wincmd L
+	else
+	silent! loadview
+	endif
+	}
 augroup END
 
 augroup styleguide
-  au!
-  au BufRead,BufNewFile *.xml set tw=109 shiftwidth=2 smarttab
-  au FileType sh set tw=79 shiftwidth=4 smarttab
-  au FileType c set tw=79 shiftwidth=8
+	au!
+	au BufRead,BufNewFile *.xml set tw=109 shiftwidth=2 smarttab
+	au FileType sh set tw=79 shiftwidth=4 smarttab
+	au FileType c set tw=79 shiftwidth=8
 augroup END
 
 

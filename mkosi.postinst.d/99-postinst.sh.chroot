@@ -4,8 +4,8 @@ set -eu
 
 # Make sure pam.d is included in usr partition
 [[ -d /etc/pam.d ]] && {
-    find /etc/pam.d -mindepth 1 -exec mv {} /usr/lib/pam.d \;
-    rmdir /etc/pam.d
+	find /etc/pam.d -mindepth 1 -exec mv {} /usr/lib/pam.d \;
+	rmdir /etc/pam.d
 }
 
 # Get rid of obsolete stuff in the pam stack
