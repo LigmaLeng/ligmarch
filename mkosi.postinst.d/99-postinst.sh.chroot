@@ -16,6 +16,6 @@ find /usr/lib/pam.d -mindepth 1 -exec sed --in-place '/pam_securetty.so/d' {} \;
 ln -s -f /usr/lib/systemd/profile.d/* /etc/profile.d/
 
 # Remove unnecessary tmpfiles configs
-rm /usr/lib/tmpfiles.d/{arch,audit,openssh,mkosi}.conf
+rm /usr/lib/tmpfiles.d/{arch,audit,openssh,mkosi,legacy,fluidsynth}.conf
 
 locale-gen

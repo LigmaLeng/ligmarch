@@ -2,7 +2,9 @@
 
 enable ssh-agent.service
 enable p11-kit-server.service
-enable pipewire.service
+disable pipewire.service
+disable fluidsynth.service
+disable filter-chain.service
 
 disable mpd.service
 disable mpd-mpris.service
