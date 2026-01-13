@@ -3,3 +3,7 @@
 enable ssh-agent.service
 enable p11-kit-server.service
 enable pipewire.service
+
+disable mpd.service
+disable mpd-mpris.service
+enable mpd.socket

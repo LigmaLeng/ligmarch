@@ -20,3 +20,6 @@ disable ssh.service
 enable sshd.socket
 enable ssh.socket
 enable sshdgenkeys.service
+
+disable mpd.service
+enable mpd.socket
